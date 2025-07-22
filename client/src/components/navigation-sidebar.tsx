@@ -4,36 +4,8 @@ import { bookContent as paperContent } from "@shared/book-content";
 // Create a table of contents based on the AI Logic content
 const createTableOfContents = () => {
   const tableOfContents: Array<{ id: string; title: string; level: number }> = [
-    // Core AI Logic Concepts
     { id: "section-1", title: "Section 1: The Concept of Inference", level: 0 },
-    { id: "inference-traditional", title: "Traditional View of Inference", level: 1 },
-    { id: "inference-ai", title: "AI Perspective on Inference", level: 1 },
-    { id: "types-inference", title: "Types of Inference", level: 1 },
-    
-    // Pattern Recognition vs Logic
-    { id: "entailment-patterns", title: "Entailment vs. Pattern Activation", level: 1 },
-    { id: "confirmation-confidence", title: "Confirmation vs. Confidence Scores", level: 1 },
-    { id: "validity-reliability", title: "Validity and Soundness vs. Reliability", level: 1 },
-    
-    // Reasoning Systems
-    { id: "types-reasoning", title: "Types of Reasoning", level: 1 },
-    { id: "limitations-capabilities", title: "Limitations and Capabilities", level: 1 },
-    { id: "processing-types", title: "Processing Types", level: 1 },
-    { id: "knowledge-nature", title: "The Nature of Knowledge", level: 1 },
-    
-    // Section 2: AI Logic Notation
-    { id: "section-2", title: "Section 2: Notational Conventions", level: 0 },
-    { id: "traditional-review", title: "Traditional Logic Review", level: 1 },
-    { id: "ai-notation", title: "Basic AI Logic Notation", level: 1 },
-    { id: "pattern-operators", title: "Pattern Recognition Operators", level: 1 },
-    { id: "ai-operators", title: "AI Logic Operators", level: 1 },
-    { id: "ai-principles", title: "AI Logic Principles", level: 1 },
-    { id: "differences-traditional", title: "Key Differences from Traditional Logic", level: 1 },
-    { id: "model-theory", title: "Model Theoretic Considerations", level: 1 },
-    { id: "future-directions", title: "Limitations and Future Directions", level: 1 },
-    
-    // Exercises and Applications
-    { id: "exercises", title: "Exercises and Practice Questions", level: 0 }
+    { id: "section-2", title: "Section 2: Notational Conventions", level: 0 }
   ];
   
   return tableOfContents;
@@ -47,75 +19,32 @@ export default function NavigationSidebar() {
   const handleNavClick = (id: string) => {
     console.log(`Clicking navigation item: ${id}`);
     
-    // First try to find exact ID match
-    let element = document.getElementById(id);
-    console.log(`Found element by ID: ${!!element}`);
-    
-    // If not found, try to find the content by searching text
-    if (!element) {
-      const titleMap: { [key: string]: string } = {
-        "section-1": "1.1 The Concept of Inference",
-        "inference-traditional": "Traditional View",
-        "inference-ai": "AI Perspective", 
-        "types-inference": "1.2 Types of Inference",
-        "entailment-patterns": "1.3 Entailment vs. Pattern Activation",
-        "confirmation-confidence": "1.4 Confirmation vs. Confidence Scores",
-        "validity-reliability": "1.5 Validity and Soundness vs. Reliability and Robustness",
-        "types-reasoning": "1.6 Types of Reasoning",
-        "limitations-capabilities": "1.7 Limitations and Capabilities",
-        "processing-types": "1.8 Processing Types",
-        "knowledge-nature": "1.9 The Nature of Knowledge",
-        "section-2": "2.0 Notational Conventions for AI Logic",
-        "traditional-review": "Traditional Logic Review",
-        "ai-notation": "2.1 Basic AI Logic Notation",
-        "pattern-operators": "Pattern Recognition Operators",
-        "ai-operators": "2.2 AI Logic Operators",
-        "ai-principles": "2.3 AI Logic Principles",
-        "differences-traditional": "2.4 Key Differences from Traditional Logic",
-        "model-theory": "2.5 Model Theoretic Considerations",
-        "future-directions": "2.6 Limitations and Future Directions",
-        "exercises": "Exercises: Traditional and AI Logic"
-      };
-      
-      const searchText = titleMap[id];
-      console.log(`Searching for text: ${searchText}`);
-      
-      if (searchText) {
-        // Find all elements containing this text in the document content area
-        const contentArea = document.querySelector('[data-document-content]');
-        if (contentArea) {
-          const allElements = contentArea.querySelectorAll('h1, h2, h3, h4, h5, h6, p');
-          for (let i = 0; i < allElements.length; i++) {
-            const el = allElements[i];
-            const textContent = el.textContent || '';
-            
-            // Skip table of contents sections - look for actual lecture content
-            // We want to skip the TOC entries and find the actual lecture headings/content
-            if (textContent.includes(searchText) && 
-                !textContent.includes('Table of Contents') && 
-                !el.closest('.table-of-contents') &&
-                // Skip short entries that are likely table of contents
-                textContent.length > 100) {
-              element = el as HTMLElement;
-              console.log(`Found element by text search: ${el.tagName} - ${textContent.substring(0, 50)}...`);
-              break;
-            }
-          }
-        }
-      }
-    }
+    // Simple direct approach - look for the element by ID
+    const element = document.getElementById(id);
     
     if (element) {
-      console.log(`Scrolling to element: ${element.tagName}#${element.id || 'no-id'}`);
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      console.log(`Found element, scrolling to: ${element.tagName}#${element.id}`);
+      element.scrollIntoView({ 
+        behavior: "smooth", 
+        block: "start",
+        inline: "nearest"
+      });
       
-      // Add a temporary highlight to show the user where they landed
+      // Brief visual feedback
+      const originalBg = element.style.backgroundColor;
       element.style.backgroundColor = '#fef3c7';
       setTimeout(() => {
-        element.style.backgroundColor = '';
-      }, 2000);
+        element.style.backgroundColor = originalBg;
+      }, 1000);
     } else {
-      console.log(`No element found for navigation ID: ${id}`);
+      console.log(`No element found with ID: ${id}`);
+      // Add a short delay and try again in case content is still loading
+      setTimeout(() => {
+        const retryElement = document.getElementById(id);
+        if (retryElement) {
+          retryElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 200);
     }
   };
 
