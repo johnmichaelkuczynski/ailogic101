@@ -158,53 +158,44 @@ export default function DocumentContent({
         .map(paragraph => {
           if (!paragraph.trim()) return '';
           
-          // Check if this is a heading and add appropriate ID for AI Logic content
-          if (paragraph.match(/^(The Concept of Inference|Traditional View|AI Perspective|Types of Inference|Entailment|Pattern Activation|Confirmation|Confidence Scores|Validity|Soundness|Reliability|Robustness|Types of Reasoning|Limitations|Capabilities|Processing Types|Knowledge|Traditional Logic Review|Basic AI Logic Notation|Pattern Recognition Operators|Confidence Scoring|Pattern Similarity|Chain of Thought|AI Logic Operators|Pattern Composition|Pattern Alternatives|Pattern Negation|AI Logic Principles|Key Differences|Model Theoretic|Embedding Spaces|Activation Patterns|Confidence Landscapes|Future Directions|Meta-Logical|Completeness|Consistency|Decidability|Tractability|Models|Traditional vs AI|Formal Models|Embedding Models|Interpretation|Exercises)/i)) {
+          // Check if this is a heading and add appropriate ID for Ethics content
+          if (paragraph.match(/^(\d+\.\d*\s)/)) {
             let headingId = '';
             const text = paragraph.trim();
             
-            // Main concept mappings for AI Logic content
-            if (text.includes('The Concept of Inference')) headingId = 'concept-inference';
-            else if (text.includes('Traditional View')) headingId = 'traditional-view';
-            else if (text.includes('AI Perspective')) headingId = 'ai-perspective';
-            else if (text.includes('Types of Inference')) headingId = 'types-inference';
-            else if (text.includes('Entailment') && text.includes('Pattern')) headingId = 'entailment-patterns';
-            else if (text.includes('Confirmation') && text.includes('Confidence')) headingId = 'confirmation-confidence';
-            else if (text.includes('Validity') && text.includes('Soundness')) headingId = 'validity-reliability';
-            else if (text.includes('Types of Reasoning')) headingId = 'types-reasoning';
-            else if (text.includes('Limitations') && text.includes('Capabilities')) headingId = 'limitations-capabilities';
-            else if (text.includes('Processing Types')) headingId = 'processing-types';
-            else if (text.includes('Nature of Knowledge')) headingId = 'knowledge-nature';
-            
-            // Notational Conventions section
-            else if (text.includes('Traditional Logic Review')) headingId = 'traditional-review';
-            else if (text.includes('Basic AI Logic Notation')) headingId = 'ai-notation';
-            else if (text.includes('Pattern Recognition Operators')) headingId = 'pattern-operators';
-            else if (text.includes('Confidence Scoring')) headingId = 'confidence-scoring';
-            else if (text.includes('Pattern Similarity')) headingId = 'pattern-similarity';
-            else if (text.includes('Chain of Thought')) headingId = 'chain-thought';
-            else if (text.includes('AI Logic Operators')) headingId = 'ai-operators';
-            else if (text.includes('Pattern Composition')) headingId = 'pattern-composition';
-            else if (text.includes('Pattern Alternatives')) headingId = 'pattern-alternatives';
-            else if (text.includes('Pattern Negation')) headingId = 'pattern-negation';
-            else if (text.includes('AI Logic Principles')) headingId = 'ai-principles';
-            else if (text.includes('Key Differences from Traditional Logic')) headingId = 'differences-traditional';
-            else if (text.includes('Model Theoretic Considerations')) headingId = 'model-theory';
-            else if (text.includes('Embedding Spaces')) headingId = 'embedding-spaces';
-            else if (text.includes('Activation Patterns')) headingId = 'activation-patterns';
-            else if (text.includes('Confidence Landscapes')) headingId = 'confidence-landscapes';
-            else if (text.includes('Limitations and Future Directions')) headingId = 'future-directions';
-            
-            // Meta-logical and Models sections
-            else if (text.includes('Meta-Logical Principles')) headingId = 'meta-logical';
-            else if (text.includes('Completeness and Consistency')) headingId = 'completeness-consistency';
-            else if (text.includes('Soundness vs. Reliability')) headingId = 'soundness-reliability';
-            else if (text.includes('Decidability vs. Tractability')) headingId = 'decidability-tractability';
-            else if (text.includes('Models: Traditional vs. AI Systems')) headingId = 'models-systems';
-            else if (text.includes('Formal Models in Classical Logic')) headingId = 'formal-models';
-            else if (text.includes('Embedding Models in AI Systems')) headingId = 'embedding-models';
-            else if (text.includes('Interpretation vs. Activation')) headingId = 'interpretation-activation';
-            else if (text.includes('Exercises')) headingId = 'exercises';
+            // Main concept mappings for Ethics content - all 16 sections
+            if (text.includes('1.0') && text.includes('What is ethics')) headingId = 'section-1';
+            else if (text.includes('2.0') && text.includes('Two kinds of goodness')) headingId = 'section-2';
+            else if (text.includes('2.1') && text.includes('Instrumental and intrinsic goodness not mutually exclusive')) headingId = 'section-2-1';
+            else if (text.includes('3.0') && text.includes('More meanings')) headingId = 'section-3';
+            else if (text.includes('3.1') && text.includes('Two kinds of intrinsic badness')) headingId = 'section-3-1';
+            else if (text.includes('4.0') && text.includes('morally complex structure')) headingId = 'section-4';
+            else if (text.includes('5.0') && text.includes('non-privative character')) headingId = 'section-5';
+            else if (text.includes('6.0') && text.includes('corollary')) headingId = 'section-6';
+            else if (text.includes('6.1') && text.includes('moral obligation to outweigh')) headingId = 'section-6-1';
+            else if (text.includes('6.2') && text.includes('right') && text.includes('good')) headingId = 'section-6-2';
+            else if (text.includes('6.3') && text.includes('wrong') && text.includes('bad')) headingId = 'section-6-3';
+            else if (text.includes('7.0') && text.includes('Ought') && text.includes('can')) headingId = 'section-7';
+            else if (text.includes('8.0') && text.includes('Legality') && text.includes('morality')) headingId = 'section-8';
+            else if (text.includes('9.0') && text.includes('moral status of passing judgment')) headingId = 'section-9';
+            else if (text.includes('10.0') && text.includes('goodness of the act vs')) headingId = 'section-10';
+            else if (text.includes('11.0') && text.includes('legal systems')) headingId = 'section-11';
+            else if (text.includes('12.0') && text.includes('condemned even though')) headingId = 'section-12';
+            else if (text.includes('13.0') && text.includes('act immorally towards oneself')) headingId = 'section-13';
+            else if (text.includes('14.0') && text.includes('metaethical principles')) headingId = 'section-14';
+            else if (text.includes('14.1') && text.includes('derive an') && text.includes('ought')) headingId = 'section-14-1';
+            else if (text.includes('14.2') && text.includes('Moore') && text.includes('open question')) headingId = 'section-14-2';
+            else if (text.includes('14.2.1') && text.includes('Commentary')) headingId = 'section-14-2-1';
+            else if (text.includes('14.3') && text.includes('Ought') && text.includes('can')) headingId = 'section-14-3';
+            else if (text.includes('14.4') && text.includes('Genetic questions')) headingId = 'section-14-4';
+            else if (text.includes('14.5') && text.includes('use to which supposed moral truths')) headingId = 'section-14-5';
+            else if (text.includes('14.6') && text.includes('implementation')) headingId = 'section-14-6';
+            else if (text.includes('15.0') && text.includes('bad reasons to reject')) headingId = 'section-15';
+            else if (text.includes('15.1') && text.includes('Discussion of (i)')) headingId = 'section-15-1';
+            else if (text.includes('15.2') && text.includes('Discussion of (ii)')) headingId = 'section-15-2';
+            else if (text.includes('15.3') && text.includes('Discussion of (iii)')) headingId = 'section-15-3';
+            else if (text.includes('15.4') && text.includes('Discussion of (iv)')) headingId = 'section-15-4';
+            else if (text.includes('16.0') && text.includes('What are ethical truths')) headingId = 'section-16';
             
             return `<h2 id="${headingId}" class="text-xl font-semibold mb-4 mt-8 text-slate-900 dark:text-slate-100">${text}</h2>`;
           }

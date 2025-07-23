@@ -1,43 +1,42 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { bookContent as paperContent } from "@shared/book-content";
 
-// Create a table of contents based on the actual AI Logic content structure
+// Create a table of contents based on the actual Ethics content structure
 const createTableOfContents = () => {
   const tableOfContents: Array<{ id: string; title: string; level: number }> = [
-    // Section 1 - Fundamental Concepts of Logic
-    { id: "section-1", title: "1.0 The Fundamental Concepts of Logic: Traditional vs. AI Approaches", level: 0 },
-    { id: "concept-inference", title: "1.1 The Concept of Inference", level: 1 },
-    { id: "traditional-view", title: "Traditional View", level: 2 },
-    { id: "ai-perspective", title: "AI Perspective", level: 2 },
-    { id: "types-inference", title: "1.2 Types of Inference", level: 1 },
-    { id: "entailment-patterns", title: "1.3 Entailment vs. Pattern Activation", level: 1 },
-    { id: "confirmation-confidence", title: "1.4 Confirmation vs. Confidence Scores", level: 1 },
-    { id: "validity-reliability", title: "1.5 Validity and Soundness vs. Reliability and Robustness", level: 1 },
-    { id: "types-reasoning", title: "1.6 Types of Reasoning", level: 1 },
-    { id: "limitations-capabilities", title: "1.7 Limitations and Capabilities", level: 1 },
-    { id: "processing-types", title: "1.8 Processing Types", level: 1 },
-    { id: "knowledge-nature", title: "1.9 The Nature of Knowledge", level: 1 },
-    
-    // Section 2 - Notational Conventions
-    { id: "section-2", title: "2.0 Notational Conventions for AI Logic", level: 0 },
-    { id: "traditional-review", title: "Traditional Logic Review", level: 1 },
-    { id: "ai-notation", title: "2.1 Basic AI Logic Notation", level: 1 },
-    { id: "pattern-operators", title: "Pattern Recognition Operators", level: 2 },
-    { id: "confidence-scoring", title: "Confidence Scoring", level: 2 },
-    { id: "pattern-similarity", title: "Pattern Similarity", level: 2 },
-    { id: "chain-thought", title: "Chain of Thought", level: 2 },
-    { id: "ai-operators", title: "2.2 AI Logic Operators", level: 1 },
-    { id: "pattern-composition", title: "Pattern Composition", level: 2 },
-    { id: "pattern-alternatives", title: "Pattern Alternatives", level: 2 },
-    { id: "pattern-negation", title: "Pattern Negation", level: 2 },
-    { id: "ai-principles", title: "2.3 AI Logic Principles", level: 1 },
-    { id: "differences-traditional", title: "2.4 Key Differences from Traditional Logic", level: 1 },
-    { id: "model-theory", title: "2.5 Model Theoretic Considerations", level: 1 },
-    { id: "embedding-spaces", title: "Embedding Spaces", level: 2 },
-    { id: "activation-patterns", title: "Activation Patterns", level: 2 },
-    { id: "confidence-landscapes", title: "Confidence Landscapes", level: 2 },
-    { id: "future-directions", title: "2.6 Limitations and Future Directions", level: 1 },
-    { id: "exercises", title: "Exercises: Traditional and AI Logic", level: 1 }
+    // All 16 main sections
+    { id: "section-1", title: "1.0 What is ethics?", level: 0 },
+    { id: "section-2", title: "2.0 Two kinds of goodness: instrumental and intrinsic", level: 0 },
+    { id: "section-2-1", title: "2.1 Instrumental and intrinsic goodness not mutually exclusive", level: 1 },
+    { id: "section-3", title: "3.0 More meanings of 'good': goodness vs. commendableness", level: 0 },
+    { id: "section-3-1", title: "3.1 Two kinds of intrinsic badness", level: 1 },
+    { id: "section-4", title: "4.0 The morally complex structure of some situations", level: 0 },
+    { id: "section-5", title: "5.0 The non-privative character of moral attributes", level: 0 },
+    { id: "section-6", title: "6.0 A corollary of the non-binary nature of moral attributes", level: 0 },
+    { id: "section-6-1", title: "6.1 For one moral obligation to outweigh another is not for it to cancel it", level: 1 },
+    { id: "section-6-2", title: "6.2 'right' ≠ 'good', 'right' = 'least bad'", level: 1 },
+    { id: "section-6-3", title: "6.3 'wrong' ≠ 'bad', 'wrong' = 'least good'", level: 1 },
+    { id: "section-7", title: "7.0 'Ought' implies 'can'", level: 0 },
+    { id: "section-8", title: "8.0 Legality ≠ morality", level: 0 },
+    { id: "section-9", title: "9.0 The moral status of passing judgment on X ≠ to the moral status of X itself", level: 0 },
+    { id: "section-10", title: "10.0 The goodness of the act vs. the goodness of the agent", level: 0 },
+    { id: "section-11", title: "11.0 Why many legal systems punish attempted crimes less severely", level: 0 },
+    { id: "section-12", title: "12.0 Aren't there people who are to be condemned even though it is their intention to do good?", level: 0 },
+    { id: "section-13", title: "13.0 Can one act immorally towards oneself?", level: 0 },
+    { id: "section-14", title: "14.0 Some metaethical principles", level: 0 },
+    { id: "section-14-1", title: "14.1 You can't derive an 'ought' from an 'is'", level: 1 },
+    { id: "section-14-2", title: "14.2 Moore's 'open question' argument", level: 1 },
+    { id: "section-14-2-1", title: "14.2.1 Commentary on the last two principles", level: 2 },
+    { id: "section-14-3", title: "14.3 'Ought' implies 'can'", level: 1 },
+    { id: "section-14-4", title: "14.4 Genetic questions must be distinguished from normative questions", level: 1 },
+    { id: "section-14-5", title: "14.5 Questions concerning the use to which supposed moral truths are put", level: 1 },
+    { id: "section-14-6", title: "14.6 Questions concerning morality must be separated from questions concerning implementation", level: 1 },
+    { id: "section-15", title: "15.0 Some bad reasons to reject ethical realism", level: 0 },
+    { id: "section-15-1", title: "15.1 Discussion of (i)", level: 1 },
+    { id: "section-15-2", title: "15.2 Discussion of (ii)", level: 1 },
+    { id: "section-15-3", title: "15.3 Discussion of (iii)", level: 1 },
+    { id: "section-15-4", title: "15.4 Discussion of (iv)", level: 1 },
+    { id: "section-16", title: "16.0 What are ethical truths?", level: 0 }
   ];
   
   return tableOfContents;
