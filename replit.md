@@ -733,10 +733,10 @@ Preferred communication style: Simple, everyday language.
   - INCREASED navigation sidebar height from calc(100vh-280px) to calc(100vh-160px) - added 120px
   - All three panels (navigation, document, chat) now aligned at same height using maximum available screen space
   - Eliminated dead space at bottom of page for optimal content viewing and scrolling experience
-- July 23, 2025: USER GUIDANCE ENHANCEMENT - Added prominent instruction message for feature discovery
-  - Added "HIGHLIGHT TEXT TO GET FULL FUNCTIONALITY" message in header next to authentication area
-  - Message styled with blue background and border for visibility without being intrusive
-  - Positioned between Model Selector and buy credits/login section to avoid content overlay
-  - Only displays on large screens (lg:block) to prevent header crowding on mobile devices
-  - Includes proper dark mode styling for both light and dark themes
-  - Helps users immediately understand how to access AI-powered features through text highlighting
+- July 23, 2025: USER GUIDANCE ENHANCEMENT - Added friendly AI chat greeting for feature discovery
+  - Added welcoming AI chat greeting that appears when chat history is empty
+  - Message explains: "This is a fully interactive text. Highlight any text to discuss, rewrite, or generate tests/study guides"
+  - Styled with friendly tone using wave emoji and blue theme colors
+  - Only appears when no chat messages exist, disappears once user starts chatting
+  - Includes proper dark mode styling and Bot icon for authentic AI assistant feel
+  - More contextual and user-friendly than static header messages

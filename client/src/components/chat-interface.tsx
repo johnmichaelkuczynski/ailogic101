@@ -290,6 +290,20 @@ export default function ChatInterface({ selectedModel, mathMode = true, selected
         {/* Chat Messages */}
         <ScrollArea className="flex-1 overflow-y-auto min-h-0">
           <div className="p-4 space-y-4">
+            {/* Initial Greeting Message */}
+            {(!chatHistory || !Array.isArray(chatHistory) || chatHistory.length === 0) && (
+              <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                <div className="flex items-start space-x-2">
+                  <Bot className="text-blue-600 dark:text-blue-400 mt-1 w-5 h-5" />
+                  <div className="flex-1">
+                    <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed">
+                      👋 Welcome! This is a fully interactive text. <strong>Highlight any text</strong> to discuss, rewrite, or generate tests/study guides. You can also ask me questions about the content directly here.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             {(chatHistory as ChatMessage[]).map((chat: ChatMessage) => (
                 <div key={chat.id} className="space-y-2">
                   {/* User Message */}
