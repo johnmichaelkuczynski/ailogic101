@@ -733,3 +733,9 @@ Preferred communication style: Simple, everyday language.
   - INCREASED navigation sidebar height from calc(100vh-280px) to calc(100vh-160px) - added 120px
   - All three panels (navigation, document, chat) now aligned at same height using maximum available screen space
   - Eliminated dead space at bottom of page for optimal content viewing and scrolling experience
+- July 23, 2025: USER GUIDANCE ENHANCEMENT - Added prominent instruction message for feature discovery
+  - Added "HIGHLIGHT TEXT TO GET FULL FUNCTIONALITY" message in top right corner of document area
+  - Message styled with blue background and border for visibility without being intrusive
+  - Positioned above existing "Select All" button to avoid feature conflicts
+  - Includes proper dark mode styling for both light and dark themes
+  - Helps users immediately understand how to access AI-powered features through text highlighting
