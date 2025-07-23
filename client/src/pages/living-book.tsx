@@ -243,6 +243,13 @@ export default function LivingBook() {
                 onModelChange={setSelectedModel} 
               />
 
+              {/* User Instruction Message */}
+              <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg px-2 py-1 shadow-sm hidden lg:block">
+                <p className="text-xs font-medium text-blue-800 dark:text-blue-200 whitespace-nowrap">
+                  HIGHLIGHT TEXT TO GET FULL FUNCTIONALITY
+                </p>
+              </div>
+
               {/* Authentication section - MOBILE RESPONSIVE */}
               {isAuthenticated && user ? (
                 <div className="flex items-center space-x-1 sm:space-x-2 border-l pl-1 sm:pl-2 ml-1 sm:ml-2">

@@ -277,14 +277,7 @@ export default function DocumentContent({
 
   return (
     <div className="bg-card overflow-hidden relative">
-      {/* User Instruction Message */}
-      <div className="absolute top-4 right-6 z-10">
-        <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-2 shadow-sm">
-          <p className="text-xs font-medium text-blue-800 dark:text-blue-200 text-center">
-            HIGHLIGHT TEXT TO GET FULL FUNCTIONALITY
-          </p>
-        </div>
-      </div>
+
 
       {/* Select All Button */}
       <div className="absolute top-16 right-6 z-10">
