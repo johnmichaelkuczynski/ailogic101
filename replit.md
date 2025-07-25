@@ -12,6 +12,7 @@ An advanced philosophical learning platform leveraging cutting-edge AI technolog
 ✓ Added Twitter card meta tags for social media integration
 ✓ All API keys activated: OpenAI, Anthropic, Perplexity, DeepSeek, Azure Speech services
 ✓ Verified all AI services are connected and operational
+✓ Updated layout: text display made twice as wide as AI chat interface (chat narrowed from 550px to 300px, document area expanded to max-w-7xl)
 
 ### Previous Changes (July 22, 2025)
 ✓ Removed all existing book content (Kaczynski, Tractatus, Art of War, Symbolic Logic, Russell, Dictionary)
