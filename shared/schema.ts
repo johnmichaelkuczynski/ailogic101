@@ -107,7 +107,7 @@ export const podcasts = pgTable("podcasts", {
   audioUrl: text("audio_url"),
   model: text("model").notNull(),
   voice: text("voice").notNull(),
-  customInstructions: text("custom_instructions"),
+  customInstructions: text("custominstructions"),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
 });
 
