@@ -65,7 +65,13 @@ export default function StudyGuideModal({ isOpen, onClose, sourceText, chunkInde
     onSuccess: (data) => {
       // Handle the API response structure
       const studyGuide = data.studyGuide || data;
-      setCurrentStudyGuide(studyGuide);
+      setCurrentStudyGuide({
+        id: studyGuide.id,
+        guideContent: typeof studyGuide.guideContent === 'string' 
+          ? studyGuide.guideContent 
+          : String(studyGuide.guideContent || 'No content available'),
+        timestamp: new Date(studyGuide.timestamp)
+      });
       queryClient.invalidateQueries({ queryKey: ["/api/study-guides"] });
       toast({
         title: "Study Guide Created",
@@ -161,9 +167,9 @@ export default function StudyGuideModal({ isOpen, onClose, sourceText, chunkInde
     }
   };
 
-  const textPreview = (typeof currentStudyGuide?.guideContent === 'string' 
-    ? currentStudyGuide.guideContent?.substring(0, 300) + ((currentStudyGuide.guideContent?.length || 0) > 300 ? "..." : "")
-    : currentStudyGuide?.guideContent || "No content available");
+  const textPreview = typeof currentStudyGuide?.guideContent === 'string' 
+    ? currentStudyGuide.guideContent.substring(0, 300) + (currentStudyGuide.guideContent.length > 300 ? "..." : "")
+    : "No content available";
 
   return (
     <>
