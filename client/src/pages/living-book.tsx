@@ -12,6 +12,7 @@ import PassageDiscussionModal from "@/components/passage-discussion-modal";
 import QuizModal from "@/components/quiz-modal";
 import StudyGuideModal from "@/components/study-guide-modal";
 import StudentTestModal from "@/components/student-test-modal";
+import PodcastModal from "@/components/podcast-modal";
 
 import ChunkingModal from "@/components/chunking-modal";
 import AuthModal from "@/components/auth-modal";
@@ -43,6 +44,8 @@ export default function LivingBook() {
   const [studentTestModalOpen, setStudentTestModalOpen] = useState(false);
   const [selectedTextForStudentTest, setSelectedTextForStudentTest] = useState<string>("");
   const [studentTestChunkIndex, setStudentTestChunkIndex] = useState<number | null>(null);
+  const [podcastModalOpen, setPodcastModalOpen] = useState(false);
+  const [selectedTextForPodcast, setSelectedTextForPodcast] = useState<string>("");
 
   const [chunkingModalOpen, setChunkingModalOpen] = useState(false);
   const [pendingChunkText, setPendingChunkText] = useState<string>("");
@@ -97,7 +100,7 @@ export default function LivingBook() {
 
 
 
-  const handleChunkAction = (chunk: string, chunkIndex: number, action: 'quiz' | 'chat' | 'rewrite' | 'study-guide' | 'student-test') => {
+  const handleChunkAction = (chunk: string, chunkIndex: number, action: 'quiz' | 'chat' | 'rewrite' | 'study-guide' | 'student-test' | 'podcast') => {
     if (action === 'quiz') {
       setSelectedTextForQuiz(chunk);
       setQuizChunkIndex(chunkIndex);
@@ -116,6 +119,9 @@ export default function LivingBook() {
       setSelectedTextForStudentTest(chunk);
       setStudentTestChunkIndex(chunkIndex);
       setStudentTestModalOpen(true);
+    } else if (action === 'podcast') {
+      setSelectedTextForPodcast(chunk);
+      setPodcastModalOpen(true);
     }
   };
 
@@ -155,6 +161,16 @@ export default function LivingBook() {
     setStudentTestModalOpen(false);
     setSelectedTextForStudentTest("");
     setStudentTestChunkIndex(null);
+  };
+
+  const handleCreatePodcastFromSelection = (text: string) => {
+    setSelectedTextForPodcast(text);
+    setPodcastModalOpen(true);
+  };
+
+  const handlePodcastModalClose = () => {
+    setPodcastModalOpen(false);
+    setSelectedTextForPodcast("");
   };
 
 
@@ -238,6 +254,20 @@ export default function LivingBook() {
                 <span className="sm:hidden">Guide</span>
               </Button>
 
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const fullText = getFullDocumentContent();
+                  handleCreatePodcastFromSelection(fullText);
+                }}
+                className="flex items-center space-x-1 sm:space-x-2 text-purple-600 border-purple-200 hover:bg-purple-50"
+              >
+                🎧
+                <span className="hidden sm:inline">Podcast</span>
+                <span className="sm:hidden">🎧</span>
+              </Button>
+
               <ModelSelector 
                 selectedModel={selectedModel} 
                 onModelChange={setSelectedModel} 
@@ -318,6 +348,7 @@ export default function LivingBook() {
             onPassageDiscussion={handlePassageDiscussion}
             onCreateStudyGuide={handleCreateStudyGuideFromSelection}
             onTestMe={handleTestMeFromSelection}
+            onCreatePodcast={handleCreatePodcastFromSelection}
           />
         </main>
 
@@ -380,6 +411,11 @@ export default function LivingBook() {
         mathMode={mathMode}
         chunkIndex={studentTestChunkIndex ?? undefined}
       />
+
+      {/* Podcast Modal */}
+      {podcastModalOpen && (
+        <PodcastModal selectedText={selectedTextForPodcast} />
+      )}
 
 
 

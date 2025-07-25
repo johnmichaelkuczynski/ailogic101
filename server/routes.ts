@@ -4,6 +4,7 @@ import { createServer, type Server } from "http";
 import session from "express-session";
 import { storage } from "./storage";
 import { generateAIResponse, generateRewrite, generatePassageExplanation, generatePassageDiscussionResponse, generateQuiz, generateStudyGuide, generateStudentTest } from "./services/ai-models";
+import { generateSpeech, generatePodcastScript } from "./services/azure-speech";
 
 import { getFullDocumentContent } from "./services/document-processor";
 
@@ -11,7 +12,9 @@ import { generatePDF } from "./services/pdf-generator";
 import { transcribeAudio } from "./services/speech-service";
 import { register, login, createSession, getUserFromSession, canAccessFeature, getPreviewResponse, isAdmin, hashPassword } from "./auth";
 import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault, verifyPaypalTransaction } from "./safe-paypal";
-import { chatRequestSchema, instructionRequestSchema, rewriteRequestSchema, quizRequestSchema, studyGuideRequestSchema, studentTestRequestSchema, submitTestRequestSchema, registerRequestSchema, loginRequestSchema, purchaseRequestSchema, type AIModel } from "@shared/schema";
+import { generateSpeech, generatePodcastScript } from "./services/azure-speech";
+import { chatRequestSchema, instructionRequestSchema, rewriteRequestSchema, quizRequestSchema, studyGuideRequestSchema, studentTestRequestSchema, submitTestRequestSchema, registerRequestSchema, loginRequestSchema, purchaseRequestSchema, insertPodcastSchema, type AIModel } from "@shared/schema";
+import { z } from "zod";
 import multer from "multer";
 
 declare module 'express-session' {
@@ -1201,6 +1204,96 @@ FEEDBACK: [explanation focusing on content accuracy]`;
       feedback
     };
   }
+
+  // Generate podcast endpoint
+  app.post("/api/generate-podcast", async (req, res) => {
+    try {
+      const { sourceText, instructions, model, voice, customInstructions } = req.body;
+      
+      const user = await getCurrentUser(req);
+      
+      // Check if user has access to full features
+      let script = "";
+      let audioBuffer: Buffer | null = null;
+      let audioUrl: string | null = null;
+      let isPreview = false;
+      
+      // Generate podcast script using AI
+      const scriptPrompt = generatePodcastScript(sourceText, customInstructions);
+      const fullScript = await generateAIResponse(model as AIModel, scriptPrompt, false);
+      
+      if (!canAccessFeature(user)) {
+        // Preview: first 100 words only
+        script = fullScript.split(' ').slice(0, 100).join(' ') + "...";
+        isPreview = true;
+      } else {
+        script = fullScript;
+        // Deduct credits for full generation (skip for admin)
+        if (!isAdmin(user)) {
+          await storage.updateUserCredits(user!.id, user!.credits - 10); // 10 credits for podcast
+        }
+        
+        // Generate full audio for authenticated users
+        try {
+          audioBuffer = await generateSpeech(script, voice || "en-US-JennyNeural");
+          audioUrl = `/api/podcast-audio/temp-${Date.now()}.mp3`;
+        } catch (speechError) {
+          console.error("Speech generation failed:", speechError);
+        }
+      }
+      
+      // Save the podcast record
+      const savedPodcast = await storage.createPodcast({
+        sourceText: sourceText.substring(0, 2000), // Limit storage size
+        instructions: instructions || "Generate podcast summary",
+        script: fullScript,
+        audioUrl,
+        model: model as AIModel,
+        voice: voice || "en-US-JennyNeural",
+        customInstructions: customInstructions || null
+      });
+      
+      // Return audio as base64 for preview or download
+      const response: any = {
+        podcast: {
+          id: savedPodcast.id,
+          script,
+          audioUrl,
+          timestamp: savedPodcast.timestamp
+        },
+        isPreview
+      };
+      
+      if (audioBuffer && !isPreview) {
+        response.audioData = audioBuffer.toString('base64');
+      } else if (isPreview && audioBuffer) {
+        // For preview, generate only 30 seconds of audio
+        const previewScript = script.split(' ').slice(0, 50).join(' '); 
+        try {
+          const previewAudio = await generateSpeech(previewScript, voice || "en-US-JennyNeural");
+          response.audioData = previewAudio.toString('base64');
+        } catch (error) {
+          console.error("Preview audio generation failed:", error);
+        }
+      }
+      
+      res.json(response);
+    } catch (error) {
+      console.error("Podcast generation error:", error);
+      res.status(500).json({ error: error instanceof Error ? error.message : "Failed to generate podcast" });
+    }
+  });
+  
+  // Get podcasts endpoint
+  app.get("/api/podcasts", async (req, res) => {
+    try {
+      const podcasts = await storage.getPodcasts();
+      res.json(podcasts);
+    } catch (error) {
+      console.error("Error fetching podcasts:", error);
+      res.status(500).json({ error: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;

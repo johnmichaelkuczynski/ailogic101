@@ -99,6 +99,18 @@ export const testResults = pgTable("test_results", {
   completedAt: timestamp("completed_at").defaultNow().notNull(),
 });
 
+export const podcasts = pgTable("podcasts", {
+  id: serial("id").primaryKey(),
+  sourceText: text("source_text").notNull(),
+  instructions: text("instructions").notNull(),
+  script: text("script").notNull(),
+  audioUrl: text("audio_url"),
+  model: text("model").notNull(),
+  voice: text("voice").notNull(),
+  customInstructions: text("custom_instructions"),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
 
 
 
@@ -181,6 +193,16 @@ export const insertTestResultSchema = createInsertSchema(testResults).pick({
   correctCount: true,
 });
 
+export const insertPodcastSchema = createInsertSchema(podcasts).pick({
+  sourceText: true,
+  instructions: true,
+  script: true,
+  audioUrl: true,
+  model: true,
+  voice: true,
+  customInstructions: true,
+});
+
 
 
 
@@ -206,6 +228,8 @@ export type Purchase = typeof purchases.$inferSelect;
 export type InsertPurchase = z.infer<typeof insertPurchaseSchema>;
 export type TestResult = typeof testResults.$inferSelect;
 export type InsertTestResult = z.infer<typeof insertTestResultSchema>;
+export type Podcast = typeof podcasts.$inferSelect;
+export type InsertPodcast = z.infer<typeof insertPodcastSchema>;
 
 
 
