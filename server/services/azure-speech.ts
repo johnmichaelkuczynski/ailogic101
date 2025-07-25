@@ -16,13 +16,19 @@ export async function generateSpeech(text: string, voice: string = "en-US-JennyN
       throw new Error("Azure Speech service not configured. Missing AZURE_SPEECH_KEY environment variable.");
     }
 
-    // Clean the text by removing audio production instructions
+    // Clean the text by removing audio production instructions and speaker labels
     const cleanedText = text
       .replace(/\[Intro music fades out\]/gi, '')
       .replace(/\[Background music.*?\]/gi, '')
       .replace(/\[Music.*?\]/gi, '')
       .replace(/\[Sound effect.*?\]/gi, '')
       .replace(/\[.*?\]/g, '') // Remove any remaining bracketed instructions
+      .replace(/^HOST:\s*/gim, '') // Remove "HOST:" at start of lines
+      .replace(/\bHOST:\s*/gi, '') // Remove "HOST:" anywhere in text
+      .replace(/^NARRATOR:\s*/gim, '') // Remove "NARRATOR:" at start of lines
+      .replace(/\bNARRATOR:\s*/gi, '') // Remove "NARRATOR:" anywhere in text
+      .replace(/^SPEAKER:\s*/gim, '') // Remove "SPEAKER:" at start of lines
+      .replace(/\bSPEAKER:\s*/gi, '') // Remove "SPEAKER:" anywhere in text
       .trim();
 
     // Create speech config
@@ -83,6 +89,8 @@ Please create a podcast script that includes:
 3. Analysis of the most important ideas and their significance
 4. Discussion of any interesting implications or applications
 5. A compelling conclusion that ties everything together
+
+IMPORTANT: Write the script as continuous prose without any speaker labels (no "HOST:", "NARRATOR:", "SPEAKER:" etc.). The entire script should flow as if spoken by a single narrator in a natural, conversational tone. Do not include any production notes, stage directions, or speaker identifications.
 
 Keep the tone conversational and accessible, as if you're explaining these ideas to an intelligent listener who may not be familiar with the subject. Make it engaging and suitable for audio consumption. Aim for approximately 3-5 minutes of speaking time.`;
 }
