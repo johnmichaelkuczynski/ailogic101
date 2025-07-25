@@ -11,13 +11,13 @@ interface BookContent {
 }
 
 export const bookContent: BookContent = {
-  title: "NEWETHICS: A Guide to Modern Ethical Thinking",
-  author: "NEWETHICS Foundation",
+  title: "ETHICS",
+  author: "J.-M. Kuczynski",
   sections: [
     {
       id: "section-1",
       title: "Introduction to NEWETHICS",
-      content: `1.0 Introduction to NEWETHICS
+      content: `1.0 Introduction
 
 There are two kinds of statements: normative and descriptive. A descriptive statement is one to the effect that such and such is the case. Descriptive statements don’t express value-judgments. Examples of such statements are “Smith is over 6-feet tall” and “grass is green.”
 

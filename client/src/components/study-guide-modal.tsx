@@ -161,7 +161,7 @@ export default function StudyGuideModal({ isOpen, onClose, sourceText, chunkInde
     }
   };
 
-  const textPreview = currentStudyGuide?.guideContent.substring(0, 300) + (currentStudyGuide?.guideContent.length > 300 ? "..." : "");
+  const textPreview = currentStudyGuide?.guideContent?.substring(0, 300) + ((currentStudyGuide?.guideContent?.length || 0) > 300 ? "..." : "");
 
   return (
     <>

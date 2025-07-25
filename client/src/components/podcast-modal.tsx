@@ -7,20 +7,23 @@ import { Label } from "@/components/ui/label";
 import { Headphones, Play, Pause, Download, Volume2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import type { AIModel } from "@shared/schema";
 
 interface PodcastModalProps {
+  isOpen: boolean;
+  onClose: () => void;
   selectedText?: string;
+  selectedModel: AIModel;
 }
 
-export function PodcastModal({ selectedText }: PodcastModalProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function PodcastModal({ isOpen, onClose, selectedText, selectedModel }: PodcastModalProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [generatedPodcast, setGeneratedPodcast] = useState<any>(null);
   const [isPreview, setIsPreview] = useState(false);
   const [customMode, setCustomMode] = useState(false);
   const [voice, setVoice] = useState("en-US-JennyNeural");
-  const [model, setModel] = useState("deepseek");
+  const [model, setModel] = useState(selectedModel || "openai");
   const [customInstructions, setCustomInstructions] = useState("");
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   const { toast } = useToast();
@@ -113,13 +116,7 @@ export function PodcastModal({ selectedText }: PodcastModalProps) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="w-full">
-          <Headphones className="w-4 h-4 mr-2" />
-          🎧 Generate Podcast
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Generate Podcast Summary</DialogTitle>

@@ -413,9 +413,12 @@ export default function LivingBook() {
       />
 
       {/* Podcast Modal */}
-      {podcastModalOpen && (
-        <PodcastModal selectedText={selectedTextForPodcast} />
-      )}
+      <PodcastModal 
+        isOpen={podcastModalOpen}
+        onClose={handlePodcastModalClose}
+        selectedText={selectedTextForPodcast}
+        selectedModel={selectedModel}
+      />
 
 
 
