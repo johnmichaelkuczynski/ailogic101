@@ -16,6 +16,15 @@ export async function generateSpeech(text: string, voice: string = "en-US-JennyN
       throw new Error("Azure Speech service not configured. Missing AZURE_SPEECH_KEY environment variable.");
     }
 
+    // Clean the text by removing audio production instructions
+    const cleanedText = text
+      .replace(/\[Intro music fades out\]/gi, '')
+      .replace(/\[Background music.*?\]/gi, '')
+      .replace(/\[Music.*?\]/gi, '')
+      .replace(/\[Sound effect.*?\]/gi, '')
+      .replace(/\[.*?\]/g, '') // Remove any remaining bracketed instructions
+      .trim();
+
     // Create speech config
     const speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, region);
     speechConfig.speechSynthesisVoiceName = voice;
@@ -26,7 +35,7 @@ export async function generateSpeech(text: string, voice: string = "en-US-JennyN
 
     return new Promise((resolve, reject) => {
       synthesizer.speakTextAsync(
-        text,
+        cleanedText,
         (result) => {
           if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
             const audioData = Buffer.from(result.audioData);
