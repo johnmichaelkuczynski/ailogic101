@@ -63,11 +63,41 @@ export function PodcastModal({ isOpen, onClose, selectedText, selectedModel }: P
       setIsPreview(data.isPreview);
 
       if (data.audioData) {
-        // Create audio element from base64 data
-        const audioBlob = new Blob([Buffer.from(data.audioData, 'base64')], { type: 'audio/mp3' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-        setAudioElement(audio);
+        try {
+          // Create audio element from base64 data
+          const binaryString = atob(data.audioData);
+          const bytes = new Uint8Array(binaryString.length);
+          for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+          
+          const audioBlob = new Blob([bytes], { type: 'audio/mp3' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audio = new Audio(audioUrl);
+          
+          // Add event listeners for better error handling
+          audio.addEventListener('loadeddata', () => {
+            console.log('Audio loaded successfully');
+          });
+          
+          audio.addEventListener('error', (e) => {
+            console.error('Audio error:', e);
+            toast({
+              title: "Audio Error",
+              description: "Failed to load generated audio.",
+              variant: "destructive"
+            });
+          });
+          
+          setAudioElement(audio);
+        } catch (audioError) {
+          console.error('Failed to process audio data:', audioError);
+          toast({
+            title: "Audio Processing Error",
+            description: "Failed to process generated audio.",
+            variant: "destructive"
+          });
+        }
       }
 
       if (data.isPreview) {
@@ -93,15 +123,26 @@ export function PodcastModal({ isOpen, onClose, selectedText, selectedModel }: P
     }
   };
 
-  const handlePlayPause = () => {
+  const handlePlayPause = async () => {
     if (!audioElement) return;
 
-    if (isPlaying) {
-      audioElement.pause();
-    } else {
-      audioElement.play();
+    try {
+      if (isPlaying) {
+        audioElement.pause();
+        setIsPlaying(false);
+      } else {
+        await audioElement.play();
+        setIsPlaying(true);
+      }
+    } catch (error) {
+      console.error('Playback error:', error);
+      toast({
+        title: "Playback Error",
+        description: "Failed to play audio. Please try again.",
+        variant: "destructive"
+      });
+      setIsPlaying(false);
     }
-    setIsPlaying(!isPlaying);
   };
 
   const handleDownload = () => {
