@@ -17,7 +17,7 @@ export async function generateSpeech(text: string, voice: string = "en-US-JennyN
     }
 
     // Clean the text by removing audio production instructions and speaker labels
-    const cleanedText = text
+    let cleanedText = text
       .replace(/\[Intro music fades out\]/gi, '')
       .replace(/\[Background music.*?\]/gi, '')
       .replace(/\[Music.*?\]/gi, '')
@@ -30,6 +30,18 @@ export async function generateSpeech(text: string, voice: string = "en-US-JennyN
       .replace(/^SPEAKER:\s*/gim, '') // Remove "SPEAKER:" at start of lines
       .replace(/\bSPEAKER:\s*/gi, '') // Remove "SPEAKER:" anywhere in text
       .trim();
+
+    // Azure Speech Service has a limit of ~10,000 characters per request
+    // Truncate text to ensure complete sentences within limit
+    if (cleanedText.length > 8000) {
+      const truncated = cleanedText.substring(0, 8000);
+      const lastSentenceEnd = Math.max(truncated.lastIndexOf('.'), truncated.lastIndexOf('!'), truncated.lastIndexOf('?'));
+      if (lastSentenceEnd > 0) {
+        cleanedText = truncated.substring(0, lastSentenceEnd + 1);
+      } else {
+        cleanedText = truncated + "...";
+      }
+    }
 
     // Create speech config
     const speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, region);
@@ -92,7 +104,7 @@ Please create a podcast script that includes:
 
 IMPORTANT: Write the script as continuous prose without any speaker labels (no "HOST:", "NARRATOR:", "SPEAKER:" etc.). The entire script should flow as if spoken by a single narrator in a natural, conversational tone. Do not include any production notes, stage directions, or speaker identifications.
 
-Keep the tone conversational and accessible, as if you're explaining these ideas to an intelligent listener who may not be familiar with the subject. Make it engaging and suitable for audio consumption. Aim for approximately 3-5 minutes of speaking time.`;
+Keep the tone conversational and accessible, as if you're explaining these ideas to an intelligent listener who may not be familiar with the subject. Make it engaging and suitable for audio consumption. Aim for approximately 2-3 minutes of speaking time (around 300-400 words maximum).`;
 }
 
 export default {
